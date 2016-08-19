@@ -1,0 +1,73 @@
+<!doctype html>
+<html >
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>jQuery UI Datepicker - Default functionality</title>
+	<link rel="stylesheet" href="./jquery-ui-1.12.0.custom/jquery-ui.css">
+
+	<script src="./jquery-ui-1.12.0.custom/external/jquery/jquery.js"></script>
+	<script src="./jquery-ui-1.12.0.custom/jquery-ui.js"></script>
+
+	<script type="text/javascript" src="./multi/jquery-ui.multidatespicker.js"/>
+	<script type="text/javascript" src="./multi/js/jquery-1.11.1.js"></script>
+	<script type="text/javascript" src="./multi/js/jquery-ui-1.11.1.js"></script>
+	<script type="text/javascript" src="./multi/js/prettify.js"></script>
+	<script type="text/javascript" src="./multi/js/lang-css.js"></script>	
+
+  <script type="text/javascript">
+
+	$(function() {
+		var year = $("#year").val();
+		// 根据年份查询数据库
+		var dateArray = [{"date":"20150101","isWorkDay":"1"},{"date":"20150103","isWorkDay":"0"}];
+
+		$('#full-year').multiDatesPicker({
+			numberOfMonths: [3,4],
+			minDate: new Date(year, 0, 1),
+			maxDate: new Date(year, 11, 31),
+			dateArray : dateArray
+		});
+
+		$("#year").change(function(){
+			var year = $("#year").val();
+			// 根据年份查询数据库
+			var dateArray = [{"date":"20160101","isWorkDay":"1"},{"date":"20160103","isWorkDay":"0"}];
+
+			$( "#full-year" ).datepicker( "option", "minDate", new Date(year, 0, 1) );
+			$( "#full-year" ).datepicker( "option", "maxDate", new Date(year, 11, 31) );
+			$( "#full-year" ).datepicker( "option", "dateArray", dateArray);
+			
+		});
+
+		$("#save").click(function(){
+	    	var dateStr = $( "[name=dateStr]" );
+	    	var dateArray = new Array();
+	    	$.each(dateStr,function(i,o){
+	    		if($(o).hasClass( "ui-state-active" )){
+	    			var obj={date:$(dateStr[i]).attr("value"),"isWorkDay":'1'};
+	    			dateArray[i] = obj;
+	    		}else{
+	    			var obj={date:$(dateStr[i]).attr("value"),"isWorkDay":'0'};
+	    			dateArray[i] = obj;
+	    		}
+	    	} );
+	    	console.log(JSON.stringify(dateArray));
+	    });
+	});
+
+
+  </script>
+</head>
+<body>
+
+<select id="year">
+	<option value="2015">2015</option>
+	<option value="2016">2016</option>
+</select>
+<input type="button" id="save" value="保存">
+
+<div id="full-year"></div> 
+</body>
+</html>
+
